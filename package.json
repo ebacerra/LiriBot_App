@@ -1,0 +1,23 @@
+{
+  "name": "LiriBot_App",
+  "version": "1.0.0",
+  "description": "",
+  "main": "keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebacerra/LiriBot_App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ebacerra/LiriBot_App/issues"
+  },
+  "homepage": "https://github.com/ebacerra/LiriBot_App#readme",
+  "dependencies": {
+    "node-spotify-api": "^1.0.7"
+  }
+}
