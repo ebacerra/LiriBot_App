@@ -180,16 +180,21 @@ function myBand() {
         if (!error && response.statusCode === 200) {
             var body = JSON.parse(body);
 
-            console.log(body)
 
+            console.log(body.datetime)
 
-            console.log("\n Venue Name: " + body.Venue + "\n", "\n Location:  " + body.country + "\n", "\n Event Dates: " + moment(body.datetime).format('MMMM Do YYYY') + "\n");
+            if (body[0]) {
+                console.log("\n Venue Name: " + body[1].venue.name + "\n", "\n Location:  " + body[1].venue.city + "\n", "\n Event Dates: " + moment(body[1].datetime).format('MMMM Do YYYY') + "\n");
+                // **** LOG TXT *** BONUS
+                fs.appendFile('log.txt', "Venue Name: " + body.Venue);
+                fs.appendFile('log.txt', "Location:  " + body.country);
+                fs.appendFile('log.txt', "Event Dates: " + moment(body.datetime).format('MMMM Do YYYY'));
+
+            } else {
+                console.log("No dates found");
+            }
             // ^^ I tried body.Venue.Name, body.venue.name body.Venue.name, body.Venue.country, body.venue.country, body.Venue.Country -- nothing's working. The only thing that's working is the datetime. I'm data back but it's not printing the way it supposed to be
 
-            // **** LOG TXT *** BONUS
-            fs.appendFile('log.txt', "Venue Name: " + body.Venue);
-            fs.appendFile('log.txt', "Location:  " + body.country);
-            fs.appendFile('log.txt', "Event Dates: " + moment(body.datetime).format('MMMM Do YYYY'));
 
 
 
