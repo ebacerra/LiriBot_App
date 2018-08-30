@@ -79,6 +79,15 @@ function myMovie() {
 
             console.log("\nMovie Title: " + body.Title + "\n", "\nYear:  " + body.Year + "\n", "\nIMDB Rating: " + body.imdbRating + "\n", "\nRotten Tomatoes Rating: " + body.Ratings[1].Value + "\n", "\n Country: " + body.Country + "\n", "\n Movie Language: " + body.Language + "\n", "\n Plot: " + body.Plot + "\n", "\n Actors: " + body.Actors + "\n");
 
+            // **** LOG TXT *** BONUS
+            fs.appendFile('log.txt', "Title: " + body.Title);
+            fs.appendFile('log.txt', "Year:  " + body.Year);
+            fs.appendFile('log.txt', "IMDB Rating: " + body.imdbRatingr);
+            fs.appendFile('log.txt', "Rotten Tomatoes Rating: " + body.Ratings[1].Value);
+            fs.appendFile('log.txt', "Country: " + body.Country);
+            fs.appendFile('log.txt', "Movie Language: " + body.Language);
+            fs.appendFile('log.txt', "Plot: " + body.Plot);
+            fs.appendFile('log.txt', "Actors: " + body.Actors);
 
         } else {
             console.error(error);
@@ -104,6 +113,12 @@ function mySpotify() {
             console.log("\nSong Title: " + songInfo.name + "\n ");
             console.log("\nAlbum: " + songInfo.album.name + "\n ");
             console.log("\nLink: " + songInfo.preview_url + "\n ");
+
+            // **** LOG TXT *** BONUS
+            fs.appendFile('log.txt', "Artist: " + songInfo.artists[0].name);
+            fs.appendFile('log.txt', "Song Title: " + songInfo.name);
+            fs.appendFile('log.txt', "Album: " + songInfo.album.name);
+            fs.appendFile('log.txt', "Link: " + songInfo.preview_url);
         }
 
 
@@ -170,6 +185,13 @@ function myBand() {
 
             console.log("\n Venue Name: " + body.Venue + "\n", "\n Location:  " + body.country + "\n", "\n Event Dates: " + moment(body.datetime).format('MMMM Do YYYY') + "\n");
             // ^^ I tried body.Venue.Name, body.venue.name body.Venue.name, body.Venue.country, body.venue.country, body.Venue.Country -- nothing's working. The only thing that's working is the datetime. I'm data back but it's not printing the way it supposed to be
+
+            // **** LOG TXT *** BONUS
+            fs.appendFile('log.txt', "Venue Name: " + body.Venue);
+            fs.appendFile('log.txt', "Location:  " + body.country);
+            fs.appendFile('log.txt', "Event Dates: " + moment(body.datetime).format('MMMM Do YYYY'));
+
+
 
         } else {
             console.log(error);
