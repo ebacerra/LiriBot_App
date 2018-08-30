@@ -1,11 +1,13 @@
-// require("dotenv").config();
+require("dotenv").config();
 var fs = require("fs");
 var request = require("request");
-var spotify = require("node-spotify-api");
+var Spotify = require("node-spotify-api");
+var moment = require('moment')
 // var inquirer = require("inquirer"); optional
-
-var keys = ("keys.js")
-
+// var formatDates = require(moment().format('MM Do YYYY')
+// );
+var keys = require("./keys.js");
+console.log(keys);
 var userInput = process.argv[2];
 var nodeArgs = process.argv;
 
@@ -46,9 +48,9 @@ function myMovie() {
     // create an empty variable to hold movie name
     var movieName = "";
 
-    for (var i = 2; i < nodeArgs.length; i++) {
+    for (var i = 3; i < nodeArgs.length; i++) {
 
-        if (i > 2 && i < nodeArgs.length) {
+        if (i > 3 && i < nodeArgs.length) {
 
             movieName = movieName + "+" + nodeArgs[i];
 
@@ -61,7 +63,7 @@ function myMovie() {
         }
     }
 
-    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&plot=short&apikey=" + keys.omdb.api_key;
 
     // This line is just to help us debug against the actual URL.
     console.log(queryUrl);
@@ -75,37 +77,37 @@ function myMovie() {
             console.log(body)
             // ^^do I still need this?
 
-            console.log(["\n Movie Title: " + body.Title + "\n", "\n Year:  " + body.Year + "\n", "\n IMDB Rating: " + body.Rating + "\n", "\n Rotten Tomatoes Rating: " + body.Rating + "\n", "\n Country: " + body.Country + "\n", "\n Movie Language: " + body.Language + "\n", "\n Plot: " + body.Plot + "\n", "\n Actors: " + body.Actor + "\n"]);
+            console.log("\nMovie Title: " + body.Title + "\n", "\nYear:  " + body.Year + "\n", "\nIMDB Rating: " + body.imdbRating + "\n", "\nRotten Tomatoes Rating: " + body.Ratings[1].Value + "\n", "\n Country: " + body.Country + "\n", "\n Movie Language: " + body.Language + "\n", "\n Plot: " + body.Plot + "\n", "\n Actors: " + body.Actors + "\n");
 
 
         } else {
-            console.log(error);
+            console.error(error);
         }
 
     });
 };
 
-// *******************************************NOT WORKING******************************************
 // my spotify API
 function mySpotify() {
 
     var spotify = new Spotify(keys.spotify);
 
-    spotify.search({ type: 'track', query: 'Perfect' }, function (err, data) {
+    spotify.search({ type: 'track', query: 'Perfect', limit: 1 }, function (err, data) {
         if (err) {
 
             return console.log('Error occurred: ' + err);
 
         } else {
-            // not sure if I'm doing this correctly - googled this one(stackoverflow) and from our activity
-            // console.log("\nArtist: " + JSON.stringify(data.tracks.items[0], artist[0].name, null, 2) + "\n ");
-            // console.log("\nSong Title: " + JSON.stringify(data.tracks.items.name + "\n ")
-            // console.log("\nAlbum: " + JSON.stringify(data.tracks.items[0].album.name + "\n ")
-            // console.log("\nLink: " + JSON.stringify(data.tracks.items[0].album.preview_url + "\n ");
+            // 
+            var songInfo = data.tracks.items[0];
+            console.log("\nArtist: " + songInfo.artists[0].name + "\n ");
+            console.log("\nSong Title: " + songInfo.name + "\n ");
+            console.log("\nAlbum: " + songInfo.album.name + "\n ");
+            console.log("\nLink: " + songInfo.preview_url + "\n ");
         }
 
-        console.log(data);
-    });// ^^Do I still need this?
+
+    });
 };
 
 
@@ -133,17 +135,13 @@ function myRandomtxt() {
 
 // myBand
 function myBand() {
-    // this will store arguments in an array
-
-    var formatDates = moment().format('MM Do YYYY');
-    console.log(formatDates);
 
     // create an empty variable to hold movie name
     var bandName = "";
 
-    for (var i = 2; i < nodeArgs.length; i++) {
+    for (var i = 3; i < nodeArgs.length; i++) {
 
-        if (i > 2 && i < nodeArgs.length) {
+        if (i > 3 && i < nodeArgs.length) {
 
             bandName = bandName + "+" + nodeArgs[i];
 
@@ -156,7 +154,7 @@ function myBand() {
         }
     }
 
-    var queryUrl = "http://www.omdbapi.com/?t=" + bandName + "&y=&plot=short&apikey=trilogy";
+    var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=" + keys.bandsInTown.app_id;
 
     // This line is just to help us debug against the actual URL.
     console.log(queryUrl);
@@ -168,12 +166,10 @@ function myBand() {
             var body = JSON.parse(body);
 
             console.log(body)
-            // ^^do I still need this?
 
-            console.log(["\n Venue Name: " + body.Venue + "\n", "\n Location:  " + body.Location + "\n", "\n Event Dates: " + body.Dates.formatDates + "\n"]);
-            //****   not sure if I pass this correctly for Moments***
 
-            // * Date of the Event (use moment to format this as "MM/DD/YYYY")
+            console.log("\n Venue Name: " + body.Venue + "\n", "\n Location:  " + body.country + "\n", "\n Event Dates: " + moment(body.datetime).format('MMMM Do YYYY') + "\n");
+            // ^^ I tried body.Venue.Name, body.venue.name body.Venue.name, body.Venue.country, body.venue.country, body.Venue.Country -- nothing's working. The only thing that's working is the datetime. I'm data back but it's not printing the way it supposed to be
 
         } else {
             console.log(error);
